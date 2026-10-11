@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NEXA AI - Smart Assistant</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="logo">N</div>
+            <div>
+                <h2>NEXA AI</h2>
+                <small>Smart Assistant</small>
+            </div>
+        </div>
+
+        <button class="new-chat" onclick="newChat()">
+            ＋ New Chat
+        </button>
+
+        <div class="menu-title">WORKSPACE</div>
+
+        <button class="menu-item active" onclick="showChat()">
+            💬 AI Chat
+        </button>
+
+        <button class="menu-item" onclick="showSaved()">
+            ⭐ Saved Messages
+        </button>
+
+        <button class="menu-item" onclick="showTasks()">
+            🎯 Study Tasks
+        </button>
+
+        <div class="menu-title">CATEGORIES</div>
+
+        <button class="menu-item" onclick="filterCategory('Studies')">
+            📚 Studies
+        </button>
+
+        <button class="menu-item" onclick="filterCategory('Programming')">
+            💻 Programming
+        </button>
+
+        <button class="menu-item" onclick="filterCategory('Health')">
+            🩺 Health
+        </button>
+
+        <button class="menu-item" onclick="filterCategory('Projects')">
+            🚀 Projects
+        </button>
+
+        <button class="menu-item" onclick="filterCategory('Career')">
+            🌍 Career
+        </button>
+
+        <div class="sidebar-bottom">
+            <button class="menu-item" onclick="toggleTheme()">
+                🌙 Toggle Dark Mode
+            </button>
+
+            <button class="menu-item" onclick="showSettings()">
+                ⚙️ Settings
+            </button>
+
+            <div class="profile">
+                <div class="avatar">U</div>
+                <div>
+                    <strong>My Workspace</strong>
+                    <small>Free Prototype</small>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+
+        <header class="topbar">
+            <button class="mobile-menu" onclick="toggleSidebar()">
+                ☰
+            </button>
+
+            <div>
+                <h3 id="pageTitle">AI Assistant</h3>
+                <small id="pageSubtitle">
+                    Your ideas, organized intelligently.
+                </small>
+            </div>
+
+            <button class="theme-button" onclick="toggleTheme()">
+                ◐
+            </button>
+        </header>
+
+        <!-- Chat screen -->
+        <section class="chat-screen" id="chatScreen">
+
+            <div class="welcome" id="welcome">
+
+                <div class="welcome-logo">✦</div>
+
+                <h1>Welcome to <span>NEXA AI</span></h1>
+
+                <p>
+                    Ask questions, explore ideas, and organize
+                    your knowledge in one smart workspace.
+                </p>
+
+                <div class="suggestions">
+
+                    <button onclick="usePrompt('Explain Java with an example')">
+                        <span>💻</span>
+                        <strong>Learn programming</strong>
+                        <small>Understand concepts simply</small>
+                    </button>
+
+                    <button onclick="usePrompt('Help me create a study plan')">
+                        <span>📚</span>
+                        <strong>Study smarter</strong>
+                        <small>Plan your learning</small>
+                    </button>
+
+                    <button onclick="usePrompt('Give me ideas for my project')">
+                        <span>🚀</span>
+                        <strong>Explore ideas</strong>
+                        <small>Improve your projects</small>
+                    </button>
+
+                    <button onclick="usePrompt('Give me a daily learning challenge')">
+                        <span>🎯</span>
+                        <strong>Daily challenge</strong>
+                        <small>Practice and improve</small>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div id="messages" class="messages"></div>
+
+        </section>
+
+        <!-- Saved messages -->
+        <section class="other-screen hidden" id="savedScreen">
+            <h2>⭐ Saved Messages</h2>
+            <p>Your bookmarked conversations appear here.</p>
+            <div id="savedList"></div>
+        </section>
+
+        <!-- Category history -->
+        <section class="other-screen hidden" id="categoryScreen">
+            <h2 id="categoryTitle">Category</h2>
+            <p>Find conversations organized by category.</p>
+            <input
+                type="text"
+                id="categorySearch"
+                placeholder="Search conversations..."
+                oninput="renderCategory()"
+            >
+            <div id="categoryList"></div>
+        </section>
+
+        <!-- Study tasks -->
+        <section class="other-screen hidden" id="tasksScreen">
+            <h2>🎯 Study Tasks</h2>
+            <p>Complete small tasks and earn points.</p>
+
+            <div class="task-card">
+                <div>
+                    <strong>Java Practice</strong>
+                    <p>Write a program to check even or odd.</p>
+                    <small>Reward: 10 points</small>
+                </div>
+
+                <button onclick="completeTask(this)">
+                    Complete
+                </button>
+            </div>
+
+            <div class="task-card">
+                <div>
+                    <strong>English Practice</strong>
+                    <p>Learn five new English words.</p>
+                    <small>Reward: 10 points</small>
+                </div>
+
+                <button onclick="completeTask(this)">
+                    Complete
+                </button>
+            </div>
+
+            <h3>Total Points: <span id="points">0</span></h3>
+        </section>
+
+        <!-- Settings -->
+        <section class="other-screen hidden" id="settingsScreen">
+            <h2>⚙️ Settings</h2>
+
+            <div class="setting-card">
+                <div>
+                    <strong>Dark Mode</strong>
+                    <p>Change the appearance of your workspace.</p>
+                </div>
+                <button onclick="toggleTheme()">Toggle</button>
+            </div>
+
+            <div class="setting-card">
+                <div>
+                    <strong>Clear Chat History</strong>
+                    <p>Remove saved prototype conversation history.</p>
+                </div>
+                <button onclick="clearHistory()">Clear</button>
+            </div>
+
+            <p class="note">
+                This prototype stores data in this browser only.
+                Do not enter passwords, private medical records,
+                or other sensitive information.
+            </p>
+        </section>
+
+        <!-- Message input -->
+        <footer class="composer" id="composer">
+
+            <div class="input-box">
+
+                <textarea
+                    id="messageInput"
+                    placeholder="Ask NEXA AI anything..."
+                    rows="1"
+                    onkeydown="handleKey(event)"
+                ></textarea>
+
+                <button class="send-button" onclick="sendMessage()">
+                    ↑
+                </button>
+
+            </div>
+
+            <div class="composer-footer">
+                <span>✦ Smart conversations. Organized knowledge.</span>
+                <span>AI responses require backend integration.</span>
+            </div>
+
+        </footer>
+
+    </main>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
