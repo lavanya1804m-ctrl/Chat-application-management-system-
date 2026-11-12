@@ -1,0 +1,28 @@
+CREATE DATABASE mindora;
+
+USE mindora;
+
+CREATE TABLE users (
+id INT AUTO_INCREMENT PRIMARY KEY,
+username VARCHAR(100) NOT NULL,
+email VARCHAR(150) UNIQUE NOT NULL,
+password VARCHAR(255) NOT NULL,
+dob DATE
+);
+
+CREATE TABLE chats (
+id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT,
+message TEXT,
+response TEXT,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE notes (
+id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT,
+title VARCHAR(200),
+content TEXT,
+FOREIGN KEY (user_id) REFERENCES users(id)
+);
